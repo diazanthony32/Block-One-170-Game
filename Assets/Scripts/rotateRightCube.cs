@@ -101,7 +101,7 @@ public class rotateRightCube : MonoBehaviour
 
         // Rotate the cube by converting the angles into a quaternion.
         // This is also our resting position of the cube
-        Quaternion target = Quaternion.Euler(tiltAroundX, 45, tiltAroundZ);
+        Quaternion target = Quaternion.Euler(tiltAroundX, 0, tiltAroundZ);
 
         // Dampen towards the target rotation
         transform.rotation = Quaternion.Slerp(transform.rotation, target,  Time.deltaTime * smooth);
