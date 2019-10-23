@@ -6,6 +6,10 @@ public class objectClicker : MonoBehaviour
 {
 
 	public GameObject block;
+	public GameObject characterCreate;
+	public Material[] material;
+
+	//private public GameObject[] numberPlanes;
 
 	float tiltAroundX = 0.0f;
 	float tiltAroundY = 0.0f;
@@ -21,7 +25,8 @@ public class objectClicker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //numberPlanes = GameObject.FindGameObjectsWithTag("planeNumber");
+
     }
 
     // Update is called once per frame
@@ -155,9 +160,33 @@ public class objectClicker : MonoBehaviour
     	{
 	        //Get the Renderer component from the new cube
 	       	var gamePlaneRenderer = plane.GetComponent<Renderer>();
+	       	var gamePlaneTransformer = plane.GetComponent<Transform>();
 
-			//Call SetColor using the shader property name "_Color" and setting the color to red
-			gamePlaneRenderer.material.SetColor("_Color", Color.red);
+			if(gamePlaneRenderer.material.GetColor("_Color") == Color.red)
+			{
+				//Call SetColor using the shader property name "_Color" and setting the color to red
+				gamePlaneRenderer.sharedMaterial = material[0];
+			}
+			else{
+
+				GameObject nathan = Instantiate(characterCreate);
+		       	var nathanTransformer = nathan.GetComponent<Transform>();
+
+		       	nathanTransformer.transform.position = gamePlaneTransformer.transform.position;
+		       	nathanTransformer.transform.rotation = gamePlaneTransformer.transform.rotation;
+		       	nathanTransformer.transform.Translate(0.0f,0.1f,0.0f);
+
+		       	nathanTransformer.transform.SetParent(gamePlaneTransformer);
+
+				//Call SetColor using the shader property name "_Color" and setting the color to red
+				gamePlaneRenderer.sharedMaterial = material[1];
+
+			}
+	    }
+
+	    if(plane.gameObject.name == "NathanPlane(Clone)")
+    	{
+	        Destroy(plane);
 	    }
 
 	    //------ DONE
