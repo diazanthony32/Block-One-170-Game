@@ -164,6 +164,17 @@ public class objectClicker : MonoBehaviour
 
 			if(gamePlaneRenderer.material.GetColor("_Color") == Color.red)
 			{
+
+				for (int i = 0; i < gamePlaneTransformer.childCount; i++)
+				{
+				    Destroy(gamePlaneTransformer.GetChild(i).gameObject);
+				}
+
+				// foreach(Transform child in gamePlaneTransformer){
+				// 	child.transform.parent = null;
+				// 	Destroy(child);
+				// 	//child.transform.Translate(0.0f,3.0f,0.0f);
+				// }
 				//Call SetColor using the shader property name "_Color" and setting the color to red
 				gamePlaneRenderer.sharedMaterial = material[0];
 			}
@@ -174,7 +185,7 @@ public class objectClicker : MonoBehaviour
 
 		       	nathanTransformer.transform.position = gamePlaneTransformer.transform.position;
 		       	nathanTransformer.transform.rotation = gamePlaneTransformer.transform.rotation;
-		       	nathanTransformer.transform.Translate(0.0f,0.1f,0.0f);
+		       	nathanTransformer.transform.Translate(0.0f,0.0f,0.0f);
 
 		       	nathanTransformer.transform.SetParent(gamePlaneTransformer);
 
@@ -182,11 +193,6 @@ public class objectClicker : MonoBehaviour
 				gamePlaneRenderer.sharedMaterial = material[1];
 
 			}
-	    }
-
-	    if(plane.gameObject.name == "NathanPlane(Clone)")
-    	{
-	        Destroy(plane);
 	    }
 
 	    //------ DONE

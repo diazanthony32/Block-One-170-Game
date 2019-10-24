@@ -5856,7 +5856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   block: {fileID: 1161629339}
-  characterCreate: {fileID: 3657936215484294417, guid: 9c436ede6b9030d489664482dd7db735,
+  characterCreate: {fileID: 1968476592218994, guid: 313ad0ef31f75b84f9f31c0528802fdd,
     type: 3}
   material:
   - {fileID: 2100000, guid: e84b34fdec2b6084088cf38023d51f3f, type: 2}
