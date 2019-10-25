@@ -10,6 +10,7 @@ TagManager:
   - left
   - top
   - right
+  - hideObject
   layers:
   - Default
   - TransparentFX

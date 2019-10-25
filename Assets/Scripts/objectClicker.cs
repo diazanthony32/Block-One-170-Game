@@ -9,6 +9,9 @@ public class objectClicker : MonoBehaviour
 	public GameObject characterCreate;
 	public Material[] material;
 
+	float numUnits = 0.0f;
+	//public TextMeshProUGUI textMesh;
+
 	//private public GameObject[] numberPlanes;
 
 	float tiltAroundX = 0.0f;
@@ -26,7 +29,6 @@ public class objectClicker : MonoBehaviour
     void Start()
     {
         //numberPlanes = GameObject.FindGameObjectsWithTag("planeNumber");
-
     }
 
     // Update is called once per frame
@@ -69,7 +71,7 @@ public class objectClicker : MonoBehaviour
 
         if(Mathf.Abs(totalTurnX) > 90){
         	
-        	print("Overshot X by: " + (Mathf.Abs(totalTurnX) - 90));
+        	//print("Overshot X by: " + (Mathf.Abs(totalTurnX) - 90));
         	var Overshot = (Mathf.Abs(totalTurnX) - 90);
 
         	if(tiltAroundX < 0)
@@ -91,7 +93,7 @@ public class objectClicker : MonoBehaviour
 
         if(Mathf.Abs(totalTurnY) > 90){
 
-        	print("Overshot Y by: " + (Mathf.Abs(totalTurnY) - 90));
+        	//print("Overshot Y by: " + (Mathf.Abs(totalTurnY) - 90));
         	var Overshot = (Mathf.Abs(totalTurnY) - 90);
 
         	if(tiltAroundY < 0)
@@ -115,7 +117,7 @@ public class objectClicker : MonoBehaviour
 
         if(Mathf.Abs(totalTurnZ) > 90){
 
-        	print("Overshot Z by: " + (Mathf.Abs(totalTurnZ) - 90));
+        	//print("Overshot Z by: " + (Mathf.Abs(totalTurnZ) - 90));
         	var Overshot = (Mathf.Abs(totalTurnZ) - 90);
 
         	if(tiltAroundZ < 0)
@@ -146,6 +148,9 @@ public class objectClicker : MonoBehaviour
         //print(Mathf.Abs(blockTransformer.transform.rotation.x * 180));
 
         //print("(" + tiltAroundX + ", " + tiltAroundY + ", " + tiltAroundZ + ")");
+        // var text = textMeshProUGUI.GetComponent<TextMeshProUGUI>();
+        // text.text = "Units on Cube: " + numUnits.ToString();
+        print(numUnits);
 
     }
 
@@ -177,8 +182,10 @@ public class objectClicker : MonoBehaviour
 				// }
 				//Call SetColor using the shader property name "_Color" and setting the color to red
 				gamePlaneRenderer.sharedMaterial = material[0];
+
+				numUnits -= 1;
 			}
-			else{
+			else if(numUnits < 12){
 
 				GameObject nathan = Instantiate(characterCreate);
 		       	var nathanTransformer = nathan.GetComponent<Transform>();
@@ -191,6 +198,8 @@ public class objectClicker : MonoBehaviour
 
 				//Call SetColor using the shader property name "_Color" and setting the color to red
 				gamePlaneRenderer.sharedMaterial = material[1];
+
+				numUnits += 1;
 
 			}
 	    }
