@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class objectClicker : MonoBehaviour
 {
@@ -9,9 +11,11 @@ public class objectClicker : MonoBehaviour
 	public GameObject characterCreate;
 	public Material[] material;
 
-	float numUnits = 0.0f;
-	//public TextMeshProUGUI textMesh;
+	public TextMeshProUGUI myText;
 
+	float numUnits = 0;
+	float maxUnits = 12;
+	
 	//private public GameObject[] numberPlanes;
 
 	float tiltAroundX = 0.0f;
@@ -24,7 +28,7 @@ public class objectClicker : MonoBehaviour
 	float totalTurnY;
 	float totalTurnZ;
 
-
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -148,9 +152,15 @@ public class objectClicker : MonoBehaviour
         //print(Mathf.Abs(blockTransformer.transform.rotation.x * 180));
 
         //print("(" + tiltAroundX + ", " + tiltAroundY + ", " + tiltAroundZ + ")");
-        // var text = textMeshProUGUI.GetComponent<TextMeshProUGUI>();
-        // text.text = "Units on Cube: " + numUnits.ToString();
-        print(numUnits);
+
+        var text = myText.GetComponent<TextMeshProUGUI>();
+        if(numUnits == maxUnits){
+        	text.text = "Units on Cube: (MAX)";
+        }
+        else{
+        	text.text = "Units on Cube: " + numUnits.ToString();
+    	}
+        //print(numUnits);
 
     }
 
@@ -185,7 +195,7 @@ public class objectClicker : MonoBehaviour
 
 				numUnits -= 1;
 			}
-			else if(numUnits < 12){
+			else if(numUnits < maxUnits){
 
 				GameObject nathan = Instantiate(characterCreate);
 		       	var nathanTransformer = nathan.GetComponent<Transform>();

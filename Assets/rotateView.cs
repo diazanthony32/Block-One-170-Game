@@ -5,11 +5,11 @@ using UnityEngine;
 public class rotateView : MonoBehaviour
 {
 
-	private float tiltAroundX = 0.0f;
-	private float tiltAroundY = 0.0f;
-	private float tiltAroundZ = 0.0f;
+	// private float tiltAroundX = 0.0f;
+	// private float tiltAroundY = 0.0f;
+	// private float tiltAroundZ = 0.0f;
 
-	private float speed = 100.0f;
+	// private float speed = 100.0f;
 
     // Start is called before the first frame update
     void Start()
