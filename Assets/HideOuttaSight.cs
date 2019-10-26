@@ -16,7 +16,7 @@ public class HideOuttaSight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //print(this.transform.parent.gameObject.transform.rotation);
     }
 
     void OnTriggerEnter(Collider other)

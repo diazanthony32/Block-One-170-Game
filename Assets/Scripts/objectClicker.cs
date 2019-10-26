@@ -15,7 +15,7 @@ public class objectClicker : MonoBehaviour
 
 	float isCubeMoving = 0;
 
-	float numUnits = 0;
+	public float numUnits = 0;
 	float maxUnits = 12;
 	
 	//private public GameObject[] numberPlanes;
@@ -211,7 +211,11 @@ public class objectClicker : MonoBehaviour
 
 		       	nathanTransformer.transform.position = gamePlaneTransformer.transform.position;
 		       	nathanTransformer.transform.rotation = gamePlaneTransformer.transform.rotation;
-		       	nathanTransformer.transform.Translate(0.0f,0.0f,0.0f);
+
+		       	var rand = Random.Range(0, 8);
+		       	
+		       	nathanTransformer.transform.Translate(0.0f, 0.0f, 0.0f);
+		       	nathanTransformer.transform.Rotate(0.0f,(rand * 45.0f), 0.0f);
 
 		       	nathanTransformer.transform.SetParent(gamePlaneTransformer);
 
