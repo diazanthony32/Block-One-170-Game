@@ -13,6 +13,8 @@ public class objectClicker : MonoBehaviour
 
 	public TextMeshProUGUI myText;
 
+	float isCubeMoving = 0;
+
 	float numUnits = 0;
 	float maxUnits = 12;
 	
@@ -38,7 +40,7 @@ public class objectClicker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    	if(Input.GetMouseButtonDown(0))
+    	if(Input.GetMouseButtonDown(0) && isCubeMoving == 0)
     	{
 	        RaycastHit[] hits;
 	        hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 100.0f);
@@ -63,6 +65,13 @@ public class objectClicker : MonoBehaviour
 	   	var blockTransformer = block.GetComponent<Transform>();
 
 	    //Quaternion target = Quaternion.Euler(tiltAroundX, tiltAroundY, tiltAroundZ);
+
+	   	if(tiltAroundX != 0 || tiltAroundY != 0 || tiltAroundZ != 0){
+        	isCubeMoving = 1;
+        }
+        else{
+        	isCubeMoving = 0;
+        }
 
      //    // Dampen towards the target rotation
         //blockTransformer.transform.rotation = Quaternion.Slerp(blockTransformer.transform.rotation, target,  Time.deltaTime * smooth);

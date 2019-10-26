@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 6250902899279148949}
   - component: {fileID: 3090867847392960427}
   - component: {fileID: 8089679792145925098}
+  - component: {fileID: 3011348966936572444}
   m_Layer: 0
   m_Name: MaleFree1 Variant
   m_TagString: character
@@ -401,6 +402,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 277ae2738fda7e44eaf8c9183fde9bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3011348966936572444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3539856831727726147}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f28be6489c1f72c4d97ed1d9d028a8a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3721359095749476212

@@ -9,7 +9,7 @@ public class rotateView : MonoBehaviour
 	// private float tiltAroundY = 0.0f;
 	// private float tiltAroundZ = 0.0f;
 
-	// private float speed = 100.0f;
+	private float speed = 10.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,10 +34,13 @@ public class rotateView : MonoBehaviour
 
         // this.transform.rotation = Quaternion.Lerp(transform.rotation, rotation, speed * Time.deltaTime);
 
-	 //    var lookPos = Camera.main.transform.position - this.transform.position;
-		// lookPos.y = 0;
-		// var rotation = Quaternion.LookRotation(lookPos);
-		// this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.deltaTime * speed);
+	    var lookPos = Camera.main.transform.position - this.transform.position;
+		lookPos.y = 0;
+
+        Vector3 cubePosition = new Vector3(0, this.transform.position.y, 0 );
+		
+        var rotation = Quaternion.LookRotation(lookPos, cubePosition);
+		this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.deltaTime * speed);
 
 		// Vector3 targetPostition = new Vector3( this.transform.position.x, this.transform.position.y, this.transform.position.z ) ;
  	// 	this.transform.LookAt( targetPostition ) ;

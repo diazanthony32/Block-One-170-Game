@@ -24,7 +24,7 @@ public class HideOuttaSight : MonoBehaviour
  		//this.GetComponent<Renderer>().enabled = false;
  		if (other.tag == "hideObject")
 	    {
-	 		print("Entered");
+	 		//print("Entered");
 	 		rend.enabled = false;
 
 	    }
@@ -58,7 +58,7 @@ public class HideOuttaSight : MonoBehaviour
  		//this.GetComponent<Renderer>().enabled = true;
  		if (other.tag == "hideObject")
 	    {
-	 		print("Exitted");
+	 		//print("Exitted");
 	 		rend.enabled = true;
 
 	    }
