@@ -16,7 +16,6 @@ public class HideOuttaSight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //print(this.transform.parent.gameObject.transform.rotation);
     }
 
     void OnTriggerEnter(Collider other)
@@ -32,26 +31,14 @@ public class HideOuttaSight : MonoBehaviour
 
     void OnTriggerStay(Collider other)
  	{
- 		// this.GetComponent<Renderer>().enabled = true;
-	  //   if (other.tag == "left")
-	  //   {
-	  //       this.transform.rotation = Quaternion.Euler(0, 90, -90);
-	  //   	//this.transform.Rotate(0,10,0);
+ 		//this.GetComponent<Renderer>().enabled = false;
+ 		if (other.tag == "hideObject")
+	    {
+	 		//print("Entered");
+	 		rend.enabled = false;
 
-	  //   }
+	    }
 
-	  //   if (other.tag == "top")
-	  //   {
-	  //       this.transform.rotation = Quaternion.Euler(0, 135, 0);
-	  //   	//this.transform.Rotate(0,10,0);
-
-	  //   }
-	  //   if (other.tag == "right")
-	  //   {
-	  //       this.transform.rotation = Quaternion.Euler(0, 180, 90);
-	  //   	//this.transform.Rotate(0,10,0);
-
-	  //   }
  	}
  	void OnTriggerExit(Collider other)
  	{

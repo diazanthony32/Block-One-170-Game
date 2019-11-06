@@ -47,8 +47,13 @@ public class ClearUnits : MonoBehaviour
 
 			planeRenderer.sharedMaterial = material[0];
 
-			objectClicker camera = Camera.main.GetComponent<objectClicker>();
-        	camera.numUnits = 0.0f;
+			objectClicker[] cameraScripts = Camera.main.GetComponents<objectClicker>();
+        	
+        	var scriptOne = cameraScripts[0];
+        	var scriptTwo = cameraScripts[1];
+
+        	scriptOne.numUnits = 0.0f;
+        	scriptTwo.numUnits = 0.0f;
         }
 
 	}
