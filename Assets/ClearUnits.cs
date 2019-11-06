@@ -27,7 +27,7 @@ public class ClearUnits : MonoBehaviour
 
     void TaskOnClick(){
 
-		Debug.Log ("You have clicked the button!");
+		//Debug.Log ("You have clicked the button!");
 
 		if (planes == null)
 		{
