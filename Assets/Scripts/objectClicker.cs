@@ -70,20 +70,26 @@ public class objectClicker : MonoBehaviour
 
 	        	for (int i = 0; i < hits.Length; i++){
 	        		RaycastHit hit = hits[i];
+                    print(hit.transform.gameObject.name);
             		CheckClick(hit.transform.gameObject);
 	        	}
 	    }
 
 	    //checks if XYZ has been set to do a turn, if so it makes it impossible to change directions until turn is finished
 	   	if(tiltAroundX != 0 || tiltAroundY != 0 || tiltAroundZ != 0){
+
         	isCubeMoving = 1;
+
+            // continously checks if the cube needs to move
+            blockTransformer.transform.Rotate(new Vector3(tiltAroundX, tiltAroundY, tiltAroundZ) * Time.deltaTime * turnSpeed, Space.World);
+    
         }
         else{
         	isCubeMoving = 0;
         }
 
         // continously checks if the cube needs to move
-        blockTransformer.transform.Rotate(new Vector3(tiltAroundX, tiltAroundY, tiltAroundZ) * Time.deltaTime * turnSpeed, Space.World);
+        //blockTransformer.transform.Rotate(new Vector3(tiltAroundX, tiltAroundY, tiltAroundZ) * Time.deltaTime * turnSpeed, Space.World);
         	//print(new Vector3(tiltAroundX, tiltAroundY, tiltAroundZ) * Time.deltaTime * turnSpeed);
 
         //checks if the X axis reaches a 90 degree turn, if so it resets variables -------------------------------
@@ -164,129 +170,109 @@ public class objectClicker : MonoBehaviour
 
     private void CheckClick(GameObject plane)
     {
-    	if(plane.gameObject.tag == "planeNumber")
-    	{
-    		print(plane.name);
-	    }
 
-	    if(plane.gameObject.tag == "plane")
-    	{
-	        //Get the Renderer component from the new cube
-	       	var gamePlaneRenderer = plane.GetComponent<Renderer>();
-	       	var gamePlaneTransformer = plane.GetComponent<Transform>();
+        UnitHandler(plane);
+        RotateHandler(plane);
 
-			if(gamePlaneRenderer.material.GetColor("_Color") == Color.red)
-			{
+    }
 
-				for (int i = 0; i < gamePlaneTransformer.childCount; i++)
-				{
-				    Destroy(gamePlaneTransformer.GetChild(i).gameObject);
-				}
+    private void UnitHandler (GameObject plane)
+    {
 
-				gamePlaneRenderer.sharedMaterial = material[0];
+        //Get the Renderer component from the plane
+        var gamePlaneRenderer = plane.GetComponent<Renderer>();
+        var gamePlaneTransformer = plane.GetComponent<Transform>();
 
-				numUnits -= 1;
-			}
-			else if(numUnits < maxUnits){
-
-				GameObject character = Instantiate(characterCreate);
-		       	var characterTransformer = character.GetComponent<Transform>();
-
-		       	characterTransformer.transform.position = gamePlaneTransformer.transform.position;
-		       	characterTransformer.transform.rotation = gamePlaneTransformer.transform.rotation;
-
-		       	var rand = Random.Range(0, 8);
-		       	
-		       	characterTransformer.transform.Translate(0.0f, 0.0f, 0.0f);
-		       	characterTransformer.transform.Rotate(0.0f,(rand * 45.0f), 0.0f);
-
-		       	characterTransformer.transform.SetParent(gamePlaneTransformer);
-
-				//Call SetColor using the shader property name "_Color" and setting the color to red
-				gamePlaneRenderer.sharedMaterial = material[1];
-
-				numUnits += 1;
-
-			}
-	    }
-
-	  //   //------ DONE
-
-	  //   if(plane.gameObject.name == "UpLeft")
-   //  	{
-			// tiltAroundX = 90;
-	  //   }
-
-	  //   if(plane.gameObject.name == "DownLeft")
-   //  	{
-			// tiltAroundX = -90;
-	  //   }
-	    
-	  //   //------- DONE
-
-	  //   if(plane.gameObject.name == "UpRight")
-   //  	{
-			// tiltAroundZ = 90;
-	  //   }
-
-	  //   if(plane.gameObject.name == "DownRight")
-   //  	{
-			// tiltAroundZ = -90;
-	  //   }
-
-	  //   //--------- DONE
-
-	  //   if(plane.gameObject.name == "LeftTurn")
-   //  	{
-			// tiltAroundY = 90;
-	  //   }
-
-	  //   if(plane.gameObject.name == "RightTurn")
-   //  	{
-	  //      	tiltAroundY = -90;
-	  //   }
-
-	    //print(directions.GetChild(0).gameObject.name);
-
-        // for (int i = 0; i < directionsTransformer.childCount; i++)
+        // if(plane.gameObject.tag == "planeNumber")
         // {
-        //     print(directionsTransformer.GetChild(i).gameObject.name);
+        //     print(plane.name);
+        // }
 
-            if(plane.gameObject.name == directionsTransformer.GetChild(0).gameObject.name)
+        //checks if the plane selected is a child of the main cube
+        if(plane.gameObject.tag == "plane" && gamePlaneTransformer.transform.parent.parent.parent == blockTransformer)
+        {
+
+            //checks if the plane has already been selected, if so it resets it
+            if(gamePlaneRenderer.material.GetColor("_Color") == Color.red)
             {
-                tiltAroundX = 90;
-            }
 
-            if(plane.gameObject.name == directionsTransformer.GetChild(1).gameObject.name)
-            {
-                tiltAroundX = -90;
-            }
-            
-            //------- DONE
+                for (int i = 0; i < gamePlaneTransformer.childCount; i++)
+                {
+                    Destroy(gamePlaneTransformer.GetChild(i).gameObject);
+                }
 
-            if(plane.gameObject.name == directionsTransformer.GetChild(2).gameObject.name)
-            {
-                tiltAroundZ = 90;
-            }
+                gamePlaneRenderer.sharedMaterial = material[0];
 
-            if(plane.gameObject.name == directionsTransformer.GetChild(3).gameObject.name)
-            {
-                tiltAroundZ = -90;
+                numUnits -= 1;
             }
+            // checks if we have reached the max amount of units allowed on the cube before we try to put anymore
+            else if(numUnits < maxUnits){
 
-            //--------- DONE
+                GameObject character = Instantiate(characterCreate);
+                var characterTransformer = character.GetComponent<Transform>();
 
-            if(plane.gameObject.name == directionsTransformer.GetChild(4).gameObject.name)
-            {
-                tiltAroundY = 90;
+                characterTransformer.transform.position = gamePlaneTransformer.transform.position;
+                characterTransformer.transform.rotation = gamePlaneTransformer.transform.rotation;
+
+                var rand = Random.Range(0, 8);
+                        
+                characterTransformer.transform.Translate(0.0f, 0.0f, 0.0f);
+                characterTransformer.transform.Rotate(0.0f,(rand * 45.0f), 0.0f);
+
+                characterTransformer.transform.SetParent(gamePlaneTransformer);
+
+                //Call SetColor using the shader property name "_Color" and setting the color to red
+                gamePlaneRenderer.sharedMaterial = material[1];
+
+                numUnits += 1;
+
             }
+        }
 
-            if(plane.gameObject.name == directionsTransformer.GetChild(5).gameObject.name)
-            {
-                tiltAroundY = -90;
-            }
-        //}
+    }
+
+    private void RotateHandler (GameObject plane)
+    {
+
+        //checks whick arrow was clicked and gives a rotational speed equal to that direction
+
+        //------- X
+
+        if(plane.gameObject.name == directionsTransformer.GetChild(0).gameObject.name)
+        {
+            tiltAroundX = 90;
+        }
+
+        if(plane.gameObject.name == directionsTransformer.GetChild(1).gameObject.name)
+        {
+            tiltAroundX = -90;
+        }
+        
+        //------- Y
+
+        if(plane.gameObject.name == directionsTransformer.GetChild(2).gameObject.name)
+        {
+            tiltAroundZ = 90;
+        }
+
+        if(plane.gameObject.name == directionsTransformer.GetChild(3).gameObject.name)
+        {
+            tiltAroundZ = -90;
+        }
+
+        //--------- Z
+
+        if(plane.gameObject.name == directionsTransformer.GetChild(4).gameObject.name)
+        {
+            tiltAroundY = 90;
+        }
+
+        if(plane.gameObject.name == directionsTransformer.GetChild(5).gameObject.name)
+        {
+            tiltAroundY = -90;
+        }
 
     }
 
 }
+
