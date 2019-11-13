@@ -42,6 +42,14 @@ public class objectClicker : MonoBehaviour
 	public GameObject selectTop;
 	public GameObject attackTop;
 
+	public GameObject selectLeft;
+	public GameObject attackLeft;
+
+	public GameObject selectRight;
+	public GameObject attackRight;
+
+	GameObject whereToAttack;
+
 	//simple check if the cube is moving
 	float isCubeMoving = 0;
 
@@ -195,7 +203,7 @@ public class objectClicker : MonoBehaviour
     		RotateHandler(plane);
     	}
 
-    	if(attackMode == 1){
+    	if(attackMode == 1 && points > 0){
     		attackHandler(plane);
     	}
 
@@ -216,28 +224,41 @@ public class objectClicker : MonoBehaviour
         // }
 
         //checks if the plane selected is a child of the main cube
-        if(plane.gameObject.tag == "planeNumber" && gamePlaneTransformer.transform.parent.gameObject == selectTop)
+        if(plane.gameObject.tag == "planeNumber")
         {
         	//print(plane.gameObject.name);
         	// attackTop.GetComponent<Transform>().childCount
 
-        	for (int i = 0; i < attackTop.GetComponent<Transform>().childCount; i++)
+        	if(gamePlaneTransformer.transform.parent.gameObject == selectTop)
+        	{
+        		whereToAttack = attackTop; 
+        	}
+        	else if(gamePlaneTransformer.transform.parent.gameObject == selectLeft)
+        	{
+        		whereToAttack = attackLeft; 
+        	}
+        	else if(gamePlaneTransformer.transform.parent.gameObject == selectRight)
+        	{
+        		whereToAttack = attackRight; 
+        	}
+
+        	for (int i = 0; i < whereToAttack.GetComponent<Transform>().childCount; i++)
             {
                 //Destroy(gamePlaneTransformer.GetChild(i).gameObject);
                 //print(attackTop.name + ": ");
                 //print(attackTop.GetComponent<Transform>().GetChild(i).gameObject.name);
 
-                if(attackTop.GetComponent<Transform>().GetChild(i).gameObject.name == plane.gameObject.name){
+                if(whereToAttack.GetComponent<Transform>().GetChild(i).gameObject.name == plane.gameObject.name){
                 	print("Found a Match!");
 
-                	var attackPlane = attackTop.GetComponent<Transform>().GetChild(i).gameObject;
+                	var attackPlane = whereToAttack.GetComponent<Transform>().GetChild(i).gameObject;
                 	var attackPlaneTransformer = attackPlane.GetComponent<Transform>();
                 	var attackPlaneRenderer = attackPlane.GetComponent<Renderer>();
 
                 	//attackPlaneRenderer.sharedMaterial = material[1];
 
                 	RaycastHit hit;
-			        if (Physics.Raycast(attackPlaneTransformer.transform.position, -Vector3.up, out hit))
+			        if (Physics.Raycast(attackPlaneTransformer.transform.position, -attackPlaneTransformer.transform.up, out hit))
 			        {
 			            print("Found an object: " + hit.transform.name);
 
@@ -249,12 +270,34 @@ public class objectClicker : MonoBehaviour
 			            var hitPlaneTransformer = hitPlane.GetComponent<Transform>();
 			            var hitPlaneRenderer = hitPlane.GetComponent<Renderer>();
 
-				        for (int p = 0; p < hitPlaneTransformer.childCount; p++)
-				        {
-				            Destroy(hitPlaneTransformer.GetChild(p).gameObject);
+			            if(hitPlaneTransformer.childCount > 0){
+			            	for (int p = 0; p < hitPlaneTransformer.childCount; p++)
+					        {
+					        	// if(hitPlaneTransformer.childCount > 0){
+					        		print("YOU HIT!");
+					        		Destroy(hitPlaneTransformer.GetChild(p).gameObject);
 
-				            hitPlaneRenderer.sharedMaterial = material[0];
-				        }
+					            	hitPlaneRenderer.sharedMaterial = material[0];
+					        	//}
+
+					            // Destroy(hitPlaneTransformer.GetChild(p).gameObject);
+
+					            // hitPlaneRenderer.sharedMaterial = material[0];
+					        }
+					    }
+					    else{
+					    	print("You Missed..");
+					    }
+
+						points -=1; 
+
+			            //}
+				        // for (int p = 0; p < hitPlaneTransformer.childCount; p++)
+				        // {
+				        //     Destroy(hitPlaneTransformer.GetChild(p).gameObject);
+
+				        //     hitPlaneRenderer.sharedMaterial = material[0];
+				        // }
 
 				        //gamePlaneRenderer.sharedMaterial = material[0];
 
@@ -262,6 +305,10 @@ public class objectClicker : MonoBehaviour
 
 					    //}
 
+			        }
+
+			        else{
+			        	print("Raycast has failed to see anything...(Something is broken)");
 			        }
 
                 	
@@ -421,14 +468,14 @@ public class objectClicker : MonoBehaviour
     public void AttackMode()
     {
     	attackMode = 1;
-    	print("AttackMode: ON");
+    	print(block.name + " AttackMode: ON");
     }
 
 
     public void revertAttackMode()
     {
     	attackMode = 0;
-    	print("AttackMode: OFF");
+    	print(block.name + " AttackMode: OFF");
     }
 
 }
