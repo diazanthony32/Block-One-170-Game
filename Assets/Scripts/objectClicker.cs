@@ -7,6 +7,9 @@ using TMPro;
 public class objectClicker : MonoBehaviour
 {
 
+	// Use GetComponent to access the camera
+    public Camera cam;
+
 	//determines what block to modify
 	public GameObject block;
 
@@ -21,13 +24,18 @@ public class objectClicker : MonoBehaviour
 
 	//updates cube units tota;
 	public TextMeshProUGUI unitText;
+	//updates cube units tota;
+	public TextMeshProUGUI pointsText;
 
 	//used for determining units in play and max allowed to be in play
 	public float numUnits = 0;
 	public float maxUnits = 12;
+	public float points = 0.0f;
 
 	//used to change the speed of the cube
 	public float turnSpeed = 2.5f;
+
+	public TurnManagement turn;
 
 	//simple check if the cube is moving
 	float isCubeMoving = 0;
@@ -45,6 +53,7 @@ public class objectClicker : MonoBehaviour
 
 	Transform blockTransformer;
 	TextMeshProUGUI text;
+	TextMeshProUGUI pointText;
     Transform directionsTransformer;
 
  
@@ -55,8 +64,9 @@ public class objectClicker : MonoBehaviour
     	//Get the Transform component from the new cube
 	   	blockTransformer = block.GetComponent<Transform>();
 	   	text = unitText.GetComponent<TextMeshProUGUI>();
+	   	pointText = pointsText.GetComponent<TextMeshProUGUI>();
         directionsTransformer = directions.GetComponent<Transform>();
-    
+
     }
 
     // Update is called once per frame
@@ -66,11 +76,11 @@ public class objectClicker : MonoBehaviour
     	if(Input.GetMouseButtonDown(0) && isCubeMoving == 0)
     	{
 	        RaycastHit[] hits;
-	        hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 100.0f);
+	        hits = Physics.RaycastAll(cam.ScreenPointToRay(Input.mousePosition), 100.0f);
 
 	        	for (int i = 0; i < hits.Length; i++){
 	        		RaycastHit hit = hits[i];
-                    print(hit.transform.gameObject.name);
+                    //print(hit.transform.gameObject.name);
             		CheckClick(hit.transform.gameObject);
 	        	}
 	    }
@@ -164,16 +174,21 @@ public class objectClicker : MonoBehaviour
         else{
         	text.text = "Units on Cube: " + numUnits.ToString();
     	}
+
+    	pointText.text = "Points: " + points.ToString();
         //print(numUnits);
 
     }
 
     private void CheckClick(GameObject plane)
     {
+    	if(points > 0 || turn.gameState == 1){
+    		UnitHandler(plane);
+	        RotateHandler(plane);
+    	}
 
-        UnitHandler(plane);
-        RotateHandler(plane);
-
+    	//print(block.name + "points: " + points);
+        
     }
 
     private void UnitHandler (GameObject plane)
@@ -193,7 +208,7 @@ public class objectClicker : MonoBehaviour
         {
 
             //checks if the plane has already been selected, if so it resets it
-            if(gamePlaneRenderer.material.GetColor("_Color") == Color.red)
+            if(gamePlaneRenderer.sharedMaterial == material[1])
             {
 
                 for (int i = 0; i < gamePlaneTransformer.childCount; i++)
@@ -241,11 +256,13 @@ public class objectClicker : MonoBehaviour
         if(plane.gameObject.name == directionsTransformer.GetChild(0).gameObject.name)
         {
             tiltAroundX = 90;
+            checkGameState();
         }
 
         if(plane.gameObject.name == directionsTransformer.GetChild(1).gameObject.name)
         {
             tiltAroundX = -90;
+            checkGameState();
         }
         
         //------- Y
@@ -253,11 +270,13 @@ public class objectClicker : MonoBehaviour
         if(plane.gameObject.name == directionsTransformer.GetChild(2).gameObject.name)
         {
             tiltAroundZ = 90;
+            checkGameState();
         }
 
         if(plane.gameObject.name == directionsTransformer.GetChild(3).gameObject.name)
         {
             tiltAroundZ = -90;
+            checkGameState();
         }
 
         //--------- Z
@@ -265,13 +284,22 @@ public class objectClicker : MonoBehaviour
         if(plane.gameObject.name == directionsTransformer.GetChild(4).gameObject.name)
         {
             tiltAroundY = 90;
+            checkGameState();
         }
 
         if(plane.gameObject.name == directionsTransformer.GetChild(5).gameObject.name)
         {
             tiltAroundY = -90;
+            checkGameState();
         }
 
+    }
+
+    private void checkGameState()
+    {
+    	if(turn.gameState != 1){
+        	points -= 1;
+        }
     }
 
 }

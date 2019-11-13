@@ -50,9 +50,9 @@ public class ClearUnits : MonoBehaviour
 			objectClicker[] cameraScripts = Camera.main.GetComponents<objectClicker>();
 
 			for (int i = 0 ; i < cameraScripts.Length ; i++)
-				{
-				    cameraScripts[i].numUnits = 0.0f;
-				}
+			{
+			    cameraScripts[i].numUnits = 0.0f;
+			}
         	
         	// var scriptOne = cameraScripts[0];
         	// var scriptTwo = cameraScripts[1];
