@@ -32,10 +32,15 @@ public class objectClicker : MonoBehaviour
 	public float maxUnits = 12;
 	public float points = 0.0f;
 
+	public float attackMode = 0.0f;
+
 	//used to change the speed of the cube
 	public float turnSpeed = 2.5f;
 
 	public TurnManagement turn;
+
+	public GameObject selectTop;
+	public GameObject attackTop;
 
 	//simple check if the cube is moving
 	float isCubeMoving = 0;
@@ -182,13 +187,124 @@ public class objectClicker : MonoBehaviour
 
     private void CheckClick(GameObject plane)
     {
-    	if(points > 0 || turn.gameState == 1){
+    	if(turn.gameState == 1){
     		UnitHandler(plane);
 	        RotateHandler(plane);
+    	}
+    	else if(points > 0){
+    		RotateHandler(plane);
+    	}
+
+    	if(attackMode == 1){
+    		attackHandler(plane);
     	}
 
     	//print(block.name + "points: " + points);
         
+    }
+
+    private void attackHandler (GameObject plane)
+    {
+
+        //Get the Renderer component from the plane
+        var gamePlaneRenderer = plane.GetComponent<Renderer>();
+        var gamePlaneTransformer = plane.GetComponent<Transform>();
+
+        // if(plane.gameObject.tag == "planeNumber")
+        // {
+        //     print(plane.name);
+        // }
+
+        //checks if the plane selected is a child of the main cube
+        if(plane.gameObject.tag == "planeNumber" && gamePlaneTransformer.transform.parent.gameObject == selectTop)
+        {
+        	//print(plane.gameObject.name);
+        	// attackTop.GetComponent<Transform>().childCount
+
+        	for (int i = 0; i < attackTop.GetComponent<Transform>().childCount; i++)
+            {
+                //Destroy(gamePlaneTransformer.GetChild(i).gameObject);
+                //print(attackTop.name + ": ");
+                //print(attackTop.GetComponent<Transform>().GetChild(i).gameObject.name);
+
+                if(attackTop.GetComponent<Transform>().GetChild(i).gameObject.name == plane.gameObject.name){
+                	print("Found a Match!");
+
+                	var attackPlane = attackTop.GetComponent<Transform>().GetChild(i).gameObject;
+                	var attackPlaneTransformer = attackPlane.GetComponent<Transform>();
+                	var attackPlaneRenderer = attackPlane.GetComponent<Renderer>();
+
+                	//attackPlaneRenderer.sharedMaterial = material[1];
+
+                	RaycastHit hit;
+			        if (Physics.Raycast(attackPlaneTransformer.transform.position, -Vector3.up, out hit))
+			        {
+			            print("Found an object: " + hit.transform.name);
+
+			            //checks if the plane has already been selected, if so it resets it
+					    //if(gamePlaneRenderer.sharedMaterial == material[1])
+					    //{
+
+			            var hitPlane = hit.transform.gameObject;
+			            var hitPlaneTransformer = hitPlane.GetComponent<Transform>();
+			            var hitPlaneRenderer = hitPlane.GetComponent<Renderer>();
+
+				        for (int p = 0; p < hitPlaneTransformer.childCount; p++)
+				        {
+				            Destroy(hitPlaneTransformer.GetChild(p).gameObject);
+
+				            hitPlaneRenderer.sharedMaterial = material[0];
+				        }
+
+				        //gamePlaneRenderer.sharedMaterial = material[0];
+
+				        //numUnits -= 1;
+
+					    //}
+
+			        }
+
+                	
+                }
+            }
+
+            // //checks if the plane has already been selected, if so it resets it
+            // if(gamePlaneRenderer.sharedMaterial == material[1])
+            // {
+
+            //     for (int i = 0; i < gamePlaneTransformer.childCount; i++)
+            //     {
+            //         Destroy(gamePlaneTransformer.GetChild(i).gameObject);
+            //     }
+
+            //     gamePlaneRenderer.sharedMaterial = material[0];
+
+            //     numUnits -= 1;
+            // }
+            // // checks if we have reached the max amount of units allowed on the cube before we try to put anymore
+            // else if(numUnits < maxUnits){
+
+            //     GameObject character = Instantiate(characterCreate);
+            //     var characterTransformer = character.GetComponent<Transform>();
+
+            //     characterTransformer.transform.position = gamePlaneTransformer.transform.position;
+            //     characterTransformer.transform.rotation = gamePlaneTransformer.transform.rotation;
+
+            //     var rand = Random.Range(0, 8);
+                        
+            //     characterTransformer.transform.Translate(0.0f, 0.0f, 0.0f);
+            //     characterTransformer.transform.Rotate(0.0f,(rand * 45.0f), 0.0f);
+
+            //     characterTransformer.transform.SetParent(gamePlaneTransformer);
+
+            //     //Call SetColor using the shader property name "_Color" and setting the color to red
+            //     gamePlaneRenderer.sharedMaterial = material[1];
+
+            //     numUnits += 1;
+
+            // }
+        }
+
     }
 
     private void UnitHandler (GameObject plane)
@@ -300,6 +416,19 @@ public class objectClicker : MonoBehaviour
     	if(turn.gameState != 1){
         	points -= 1;
         }
+    }
+
+    public void AttackMode()
+    {
+    	attackMode = 1;
+    	print("AttackMode: ON");
+    }
+
+
+    public void revertAttackMode()
+    {
+    	attackMode = 0;
+    	print("AttackMode: OFF");
     }
 
 }
