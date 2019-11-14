@@ -48,7 +48,21 @@ public class objectClicker : MonoBehaviour
 	public GameObject selectRight;
 	public GameObject attackRight;
 
+	//inner faces of cube
+	public GameObject selectBottom;
+	public GameObject attackBottom;
+
+	public GameObject selectBackLeft;
+	public GameObject attackBackLeft;
+
+	public GameObject selectBackRight;
+	public GameObject attackBackRight;
+
 	GameObject whereToAttack;
+
+	List<GameObject> hiddenFloatingPlanes = new List<GameObject>();
+	List<GameObject> hiddenPlanes = new List<GameObject>();
+	List<GameObject> hiddenFaces = new List<GameObject>();
 
 	//simple check if the cube is moving
 	float isCubeMoving = 0;
@@ -238,7 +252,7 @@ public class objectClicker : MonoBehaviour
         //     print(plane.name);
         // }
 
-        //checks if the plane selected is a child of the main cube
+        //checks if the plane selected is a "floating" target plane
         if(plane.gameObject.tag == "planeNumber")
         {
         	//print(plane.gameObject.name);
@@ -256,96 +270,116 @@ public class objectClicker : MonoBehaviour
         	{
         		whereToAttack = attackRight; 
         	}
+        	else if(gamePlaneTransformer.transform.parent.gameObject == selectBottom)
+        	{
+        		whereToAttack = attackBottom; 
+        	}
+        	else if(gamePlaneTransformer.transform.parent.gameObject == selectBackLeft)
+        	{
+        		whereToAttack = attackBackLeft; 
+        	}
+        	else if(gamePlaneTransformer.transform.parent.gameObject == selectBackRight)
+        	{
+        		whereToAttack = attackBackRight; 
+        	}
 
-        	for (int i = 0; i < whereToAttack.GetComponent<Transform>().childCount; i++)
-            {
-                //Destroy(gamePlaneTransformer.GetChild(i).gameObject);
-                //print(attackTop.name + ": ");
-                //print(attackTop.GetComponent<Transform>().GetChild(i).gameObject.name);
+        	if(whereToAttack != null)
+        	{
 
-                if(whereToAttack.GetComponent<Transform>().GetChild(i).gameObject.name == plane.gameObject.name){
-                	print("Found a Match!");
+	        	for (int i = 0; i < whereToAttack.GetComponent<Transform>().childCount; i++)
+	            {
+	                //Destroy(gamePlaneTransformer.GetChild(i).gameObject);
+	                //print(attackTop.name + ": ");
+	                //print(attackTop.GetComponent<Transform>().GetChild(i).gameObject.name);
 
-                	var attackPlane = whereToAttack.GetComponent<Transform>().GetChild(i).gameObject;
-                	var attackPlaneTransformer = attackPlane.GetComponent<Transform>();
-                	var attackPlaneRenderer = attackPlane.GetComponent<Renderer>();
+	                if(whereToAttack.GetComponent<Transform>().GetChild(i).gameObject.name == plane.gameObject.name){
+	                	//print("Found a Match on Opposite Cube!");
 
-                	//attackPlaneRenderer.sharedMaterial = material[1];
+	                	var attackPlane = whereToAttack.GetComponent<Transform>().GetChild(i).gameObject;
+	                	var attackPlaneTransformer = attackPlane.GetComponent<Transform>();
+	                	var attackPlaneRenderer = attackPlane.GetComponent<Renderer>();
 
-                	RaycastHit hit;
-			        if (Physics.Raycast(attackPlaneTransformer.transform.position, -attackPlaneTransformer.transform.up, out hit))
-			        {
-			            print("Found an object: " + hit.transform.name);
+	                	attackPlaneRenderer.sharedMaterial = material[1];
 
-			            //checks if the plane has already been selected, if so it resets it
-					    //if(gamePlaneRenderer.sharedMaterial == material[1])
-					    //{
+	                	RaycastHit hit;
+				        if (Physics.Raycast(attackPlaneTransformer.transform.position, -attackPlaneTransformer.transform.up, out hit))
+				        {
+				            //print("Found an object: " + hit.transform.name);
 
-			            var hitPlane = hit.transform.gameObject;
-			            var hitPlaneTransformer = hitPlane.GetComponent<Transform>();
-			            var hitPlaneRenderer = hitPlane.GetComponent<Renderer>();
+				            //checks if the plane has already been selected, if so it resets it
+						    //if(gamePlaneRenderer.sharedMaterial == material[1])
+						    //{
 
-			            if(hitPlaneTransformer.childCount > 0){
-			            	for (int p = 0; p < hitPlaneTransformer.childCount; p++)
-					        {
-					        	// if(hitPlaneTransformer.childCount > 0){
-					        		print("YOU HIT!");
-					        		Destroy(hitPlaneTransformer.GetChild(p).gameObject);
-					        		//turn.Player_2.numUnits -= 1;
+				            var hitPlane = hit.transform.gameObject;
+				            var hitPlaneTransformer = hitPlane.GetComponent<Transform>();
+				            var hitPlaneRenderer = hitPlane.GetComponent<Renderer>();
 
-					        		if(turn.Player_1 == this){
-					        			print("Clicked on Player_1");
-					        			turn.Player_2.numUnits -= 1;
-					        		}
-					        		else if(turn.Player_2 == this){
-					        			print("Clicked on Player_2");
-					        			turn.Player_1.numUnits -= 1;
-					        		}
+				            if(hitPlaneTransformer.childCount > 0){
+				            	for (int p = 0; p < hitPlaneTransformer.childCount; p++)
+						        {
+						        	// if(hitPlaneTransformer.childCount > 0){
+						        		print("YOU HIT!");
+						        		Destroy(hitPlaneTransformer.GetChild(p).gameObject);
+						        		//turn.Player_2.numUnits -= 1;
 
-					            	hitPlaneRenderer.sharedMaterial = material[0];
-					        	//}
+						        		if(turn.Player_1 == this){
+						        			//print("Clicked on Player_1");
+						        			turn.Player_2.numUnits -= 1;
+						        		}
+						        		else if(turn.Player_2 == this){
+						        			//print("Clicked on Player_2");
+						        			turn.Player_1.numUnits -= 1;
+						        		}
 
-					            // Destroy(hitPlaneTransformer.GetChild(p).gameObject);
+						            	hitPlaneRenderer.sharedMaterial = material[0];
+						        	//}
 
-					            // hitPlaneRenderer.sharedMaterial = material[0];
-					        }
-					    }
-					    else{
-					    	print("You Missed..");
-					    }
+						            // Destroy(hitPlaneTransformer.GetChild(p).gameObject);
 
-						if(turn.Player_1 == this){
-		        			//print("Clicked on Player_1");
-		        			turn.Player_1.points -= 1;
-		        		}
-		        		else if(turn.Player_2 == this){
-		        			//print("Clicked on Player_2");
-		        			turn.Player_2.points -= 1;
-		        		} 
+						            // hitPlaneRenderer.sharedMaterial = material[0];
+						        }
+						    }
+						    else{
+						    	print("You Missed..");
+						    }
 
-			            //}
-				        // for (int p = 0; p < hitPlaneTransformer.childCount; p++)
-				        // {
-				        //     Destroy(hitPlaneTransformer.GetChild(p).gameObject);
+							if(turn.Player_1 == this){
+			        			//print("Clicked on Player_1");
+			        			turn.Player_1.points -= 1;
+			        		}
+			        		else if(turn.Player_2 == this){
+			        			//print("Clicked on Player_2");
+			        			turn.Player_2.points -= 1;
+			        		} 
 
-				        //     hitPlaneRenderer.sharedMaterial = material[0];
-				        // }
+				            //}
+					        // for (int p = 0; p < hitPlaneTransformer.childCount; p++)
+					        // {
+					        //     Destroy(hitPlaneTransformer.GetChild(p).gameObject);
 
-				        //gamePlaneRenderer.sharedMaterial = material[0];
+					        //     hitPlaneRenderer.sharedMaterial = material[0];
+					        // }
 
-				        //numUnits -= 1;
+					        //gamePlaneRenderer.sharedMaterial = material[0];
 
-					    //}
+					        //numUnits -= 1;
 
-			        }
+						    //}
 
-			        else{
-			        	print("Raycast has failed to see anything...(Something is broken)");
-			        }
+				        }
 
-                	
-                }
-            }
+				        else{
+				        	print("Raycast has failed to see anything...(Something is broken)");
+				        }
+
+	                	
+	                }
+	            }
+        	}
+
+        	else{
+        		print("You clicked the wrong cube dummy");
+        	}
 
             // //checks if the plane has already been selected, if so it resets it
             // if(gamePlaneRenderer.sharedMaterial == material[1])
@@ -495,6 +529,94 @@ public class objectClicker : MonoBehaviour
     	if(turn.gameState != 1){
         	points -= 1;
         }
+    }
+
+    public void hideFrontP1()
+    {
+
+    	hide(turn.Player_1.selectTop);
+    	hide(turn.Player_1.selectLeft);
+    	hide(turn.Player_1.selectRight);
+
+    }
+
+    public void hideFrontP2()
+    {
+
+    	hide(turn.Player_2.selectTop);
+    	hide(turn.Player_2.selectLeft);
+    	hide(turn.Player_2.selectRight);
+
+    }
+
+    public void hide(GameObject selected)
+    {
+
+    	selected.SetActive(false);
+    	hiddenFloatingPlanes.Add(selected);
+    	// turn.Player_1.selectLeft.SetActive(false);
+    	// turn.Player_1.selectRight.SetActive(false);
+
+    	var topTransformer = selected.GetComponent<Transform>();
+    	var midChildTransformer = topTransformer.GetChild(4).gameObject.GetComponent<Transform>();
+
+        RaycastHit hit;
+        if (Physics.Raycast(midChildTransformer.transform.position, -midChildTransformer.transform.up, out hit))
+        {
+            //print("Found an object 1: " + hit.transform.name);
+
+            var parentPlane = hit.transform.parent.gameObject;
+            hiddenPlanes.Add(parentPlane);
+            parentPlane.SetActive(false);
+
+
+            var transformer = parentPlane.GetComponent<Transform>();
+	    	var midTransformer = transformer.GetChild(4).gameObject.GetComponent<Transform>();
+
+	        RaycastHit hit2;
+	        if (Physics.Raycast(midTransformer.transform.position, -midTransformer.transform.up, out hit2))
+	        {
+	            //print("Found an object 2: " + hit2.transform.name);
+
+	            var parentPlane2 = hit2.transform.gameObject;
+	            hiddenFaces.Add(parentPlane2);
+	            parentPlane2.SetActive(false);
+	        }
+
+	    }
+
+        else{
+        	print("Raycast has failed to see anything...(Something is broken)");
+        }
+
+    }
+
+    public void show()
+    {
+    	for(int i = 0; i < hiddenFloatingPlanes.Count; i++)
+        {
+        	//print(hiddenFloatingPlanes[i].name);
+        	hiddenFloatingPlanes[i].SetActive(true);
+        	//hiddenFloatingPlanes.RemoveAt(i);
+        }
+
+        //print(hiddenFloatingPlanes.Count);
+
+        for(int i = 0; i < hiddenPlanes.Count; i++)
+        {
+        	//print(hiddenPlanes[i].name);
+        	hiddenPlanes[i].SetActive(true);
+        }
+
+        for(int i = 0; i < hiddenFaces.Count; i++)
+        {
+        	//print(hiddenFaces[i].name);
+        	hiddenFaces[i].SetActive(true);
+        }
+
+        hiddenFloatingPlanes.Clear();
+        hiddenPlanes.Clear();
+        hiddenFaces.Clear();
     }
 
 }

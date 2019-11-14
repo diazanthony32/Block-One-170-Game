@@ -35,12 +35,12 @@ public class TurnManagement : MonoBehaviour
     void Update()
     {
         if(Player_1.numUnits == Player_1.maxUnits && Player_2.numUnits == Player_2.maxUnits && gameState == 1){
-        	gameStartButton.active = true;
+        	gameStartButton.SetActive(true);
         	nextState();
         }
 
         if(roundCount == 30 && gameState == 2){
-        	nextRoundButton.active = false;
+        	nextRoundButton.SetActive(false);
         	print("Game Over");
         	nextState();
         }
@@ -58,7 +58,7 @@ public class TurnManagement : MonoBehaviour
     public void nextState()
     {
         gameState++;
-        print("State: " + gameState);
+        //print("State: " + gameState);
     }
 
     public void p1AttackMode()
