@@ -276,6 +276,16 @@ public class objectClicker : MonoBehaviour
 					        	// if(hitPlaneTransformer.childCount > 0){
 					        		print("YOU HIT!");
 					        		Destroy(hitPlaneTransformer.GetChild(p).gameObject);
+					        		//turn.Player_2.numUnits -= 1;
+
+					        		if(turn.Player_1 == this){
+					        			print("Clicked on Player_1");
+					        			turn.Player_2.numUnits -= 1;
+					        		}
+					        		else if(turn.Player_2 == this){
+					        			print("Clicked on Player_2");
+					        			turn.Player_1.numUnits -= 1;
+					        		}
 
 					            	hitPlaneRenderer.sharedMaterial = material[0];
 					        	//}
@@ -289,7 +299,14 @@ public class objectClicker : MonoBehaviour
 					    	print("You Missed..");
 					    }
 
-						points -=1; 
+						if(turn.Player_1 == this){
+		        			//print("Clicked on Player_1");
+		        			turn.Player_1.points -= 1;
+		        		}
+		        		else if(turn.Player_2 == this){
+		        			//print("Clicked on Player_2");
+		        			turn.Player_2.points -= 1;
+		        		} 
 
 			            //}
 				        // for (int p = 0; p < hitPlaneTransformer.childCount; p++)
@@ -463,19 +480,6 @@ public class objectClicker : MonoBehaviour
     	if(turn.gameState != 1){
         	points -= 1;
         }
-    }
-
-    public void AttackMode()
-    {
-    	attackMode = 1;
-    	print(block.name + " AttackMode: ON");
-    }
-
-
-    public void revertAttackMode()
-    {
-    	attackMode = 0;
-    	print(block.name + " AttackMode: OFF");
     }
 
 }

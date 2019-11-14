@@ -60,4 +60,30 @@ public class TurnManagement : MonoBehaviour
         gameState++;
         print("State: " + gameState);
     }
+
+    public void p1AttackMode()
+    {
+    	Player_1.attackMode = 1;
+    	print(Player_1.block.name + " AttackMode: ON");
+    }
+
+
+    public void p1RevertAttackMode()
+    {
+    	Player_1.attackMode = 0;
+    	print(Player_1.block.name + " AttackMode: OFF");
+    }
+
+    public void p2AttackMode()
+    {
+    	Player_2.attackMode = 1;
+    	print(Player_2.block.name + " AttackMode: ON");
+    }
+
+
+    public void p2RevertAttackMode()
+    {
+    	Player_2.attackMode = 0;
+    	print(Player_2.block.name + " AttackMode: OFF");
+    }
 }
