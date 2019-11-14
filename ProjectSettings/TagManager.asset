@@ -11,6 +11,7 @@ TagManager:
   - top
   - right
   - hideObject
+  - cube
   layers:
   - Default
   - TransparentFX

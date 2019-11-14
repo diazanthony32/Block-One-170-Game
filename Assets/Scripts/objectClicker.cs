@@ -98,6 +98,21 @@ public class objectClicker : MonoBehaviour
 	        	}
 	    }
 
+	        // RaycastHit[] highlight;
+	        // highlight = Physics.RaycastAll(cam.ScreenPointToRay(Input.mousePosition), 100.0f);
+
+	        // 	for (int i = 0; i < highlight.Length; i++){
+	        // 		RaycastHit toBeHighlighted = highlight[i];
+	        // 		if(toBeHighlighted.transform.gameObject.tag == "plane" && turn.gameState > 0){
+	        // 			print("hovering over plane");
+
+	        // 			var highlightTransformer = toBeHighlighted.transform.gameObject.GetComponent<Renderer>();
+
+	        // 			highlightTransformer.sharedMaterial = material[1];
+	        // 		}
+	        // 	}
+	    
+
 	    //checks if XYZ has been set to do a turn, if so it makes it impossible to change directions until turn is finished
 	   	if(tiltAroundX != 0 || tiltAroundY != 0 || tiltAroundZ != 0){
 
